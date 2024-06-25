@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home | Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div>
+        <nav class="navbar bg-primary bg-body-tertiary py-3" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a href="/" class="navbar-brand">Google Notes</a>
+                <div class="d-flex" role="search">
+                    <a href="/login"><button class="btn btn-outline-light mx-1" type="submit">Login</button></a>
+                    <a href="/signup"><button class="btn btn-outline-light mx-1" type="submit">SignUp</button></a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container my-5">
+            <button type="button" class="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add New Notes
+            </button>
+            <br><br>
+            <div class="row">
+                <div class="card mb-3 mx-3" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+                <div class="card mb-3 mx-3" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+                <div class="card mb-3 mx-3" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ---------------- NOTES WINDOW ------------------ -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="Heading">Title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="title"
+                            placeholder="Example Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="desc" class="form-label">Notes Description</label>
+                        <textarea type="text" class="form-control" id="desc" rows="7"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="submit" type="button" class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+
+async function postData(url='',data={}){
+        try{
+          const response = await fetch(url, {
+            method : 'POST',
+            headers : {
+              'Content-Type' : 'application/JSON',
+            },
+            body : JSON.stringify(data),
+          });
+          
+          if(!response.ok) {
+            throw new Error(`Error HTTP status ${response.status}`)
+          }
+          let log_data = await response.json();
+          return log_data
+
+        } catch(error) {
+            console.error(error.message);
+            throw error;
+        }
+      }
+
+        const user = JSON.parse(localStorage.getItem('user'))
+        if(!user || !user.email) {
+          window.location = '/login'
+        }
+        const notes = postData('/getnotes',{token : user.email})
+        notes.then((notes) => {
+          console.log("notes")
+        //   duplicate notesss
+        })
+        let submit = document.querySelector("#submit")
+        submit.addEventListener('click', () => {
+            let title = document.querySelector('#title').value
+            let description = document.querySelector('#desc').value
+            console.log(`Submitted ${title} : ${description}`)
+        })
+
+
+    </script>
+</body>
+
+</html>
