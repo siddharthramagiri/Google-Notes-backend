@@ -88,6 +88,16 @@ app.post('/addnote', expressAsyncHandler(async (req,res) => {
     
 }))
 
+app.get('/shownote',(req,res) => {
+    res.sendFile(path.join(__dirname,'public','opennote.html'))
+})
+
+app.post('/shownote', expressAsyncHandler(async (req,res) => {
+    const {id} = req.body
+    const opennote = await noteschema.findOne({_id : id})
+    res.status(200).json({success:true,note : opennote})
+}))
+
 app.post('/deletenote', (req,res) => {
     
 })

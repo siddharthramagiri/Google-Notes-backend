@@ -29,6 +29,9 @@ submit.addEventListener('click', async () => {
         if(resp.success === true) {
           alert(`${resp.message}`)
           localStorage.setItem('user',JSON.stringify(resp.user))
+          document.querySelector('#email').value=''
+          document.querySelector('#password').value=''
+          window.location='/';
         } else if (resp.success === false) {
           alert(`${resp.message}`)
         }

@@ -31,6 +31,9 @@ submit.addEventListener('click', async () => {
       console.log(resp.success)
       if(resp.success === true) {
         alert(`${resp.message}`)
+        document.querySelector('#email').value=''
+        document.querySelector('#username').value=''
+        document.querySelector('#password').value=''
       } else if (resp.success === false) {
         alert(`${resp.message}`)
       }

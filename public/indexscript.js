@@ -1,4 +1,5 @@
 
+let logout = document.querySelector('.logout')
 
 async function postData(url = '', data = {}) {
   try {
@@ -29,6 +30,7 @@ if (!user || !user.email) {
 console.log(user._id)
 const fetchNotes = async () => { 
   if (user && user._id) {
+    logout.classList.remove("hide")
     const notes = await postData('/getnotes', { user_id: user._id })
 
     if(notes) {
@@ -38,26 +40,26 @@ const fetchNotes = async () => {
       //duplicate notes
       await notes.notes.forEach(element => {
         let str = `
-                    <div class="card mb-3 mx-3" style="width: 18rem;">
+                    <div class="card mb-3 mx-3" style="width: 18rem;" onclick="shownote('${element.title}','${element.description}','${element._id}')">
                             <div class="card-body">
                                 <h5 class="card-title">${element.title}</h5>
                                 <p class="card-text">${element.description}</p>
-                                <a href="#" class="btn btn-outline-danger btn-sm">Delete</a>
+                                <a href="/deletenote" class="btn btn-outline-danger btn-sm delete">Delete</a>
                             </div>
                         </div>
                   `
-
         notescontainer.innerHTML += str
       });
     }
-
-    // notes.then(async (notes) => {
-    //   //   duplicate notesss
-      
-    // })
   }
 }
 fetchNotes();
+
+logout.addEventListener('click',() => {
+  localStorage.removeItem("user")
+  localStorage.removeItem('Note Data')
+  window.location='/login';
+});
 
 let submit = document.querySelector("#submit")
 submit.addEventListener('click', async () => {
@@ -74,3 +76,13 @@ submit.addEventListener('click', async () => {
     alert(`${resp.message}`)
   }
 })
+
+
+async function shownote(title,description,id) {
+  const resp = await postData(`/shownote`,{id})
+  if (resp.success) {
+    localStorage.setItem('Notes Data',JSON.stringify(resp.note))
+    console.log(resp.note)
+  }
+  window.location.href=`/shownote`;
+}
