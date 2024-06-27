@@ -13,6 +13,6 @@ router.post('/getnotes',getNotes);
 
 router.post('/addnote',AddNotes);
 
-router.post('/shownote', ShowNote);
+// router.post('/shownote', ShowNote);
 
 module.exports = router

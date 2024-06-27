@@ -1,9 +1,12 @@
 const noteschema = require('../models/Notesmodel')
+const userschemas = require('../models/Usersmodel')
 const ExpressAsyncHandler = require('express-async-handler')
 const errorhandle = require('../middlewares/ErrorHandler')
 
 const getNotes =  async (req,res) => {
     console.log(req.body.user_id)
+    let user = await userschemas.findOne({_id : req.body.user_id})
+    console.log(user.email)
     let notes = await noteschema.find({user_id : req.body.user_id})
     // console.log(notes)
     res.status(200).json({success : true, notes})
