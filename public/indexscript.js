@@ -72,6 +72,9 @@ submit.addEventListener('click', async () => {
   if (resp.success === true) {
     alert(`${resp.message}`)
     await fetchNotes();
+    document.querySelector('#title').value = ""
+    document.querySelector('#desc').value = ""
+    await document.getElementById('close').click()
   } else {
     alert(`${resp.message}`)
   }
