@@ -29,5 +29,6 @@ const logout = document.querySelector('.logout')
 logout.addEventListener('click', () => {
     localStorage.removeItem("user")
     localStorage.removeItem('Note Data')
+    localStorage.removeItem('Access Token')
     window.location = '/login';
 });

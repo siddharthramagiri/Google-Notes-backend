@@ -24,7 +24,9 @@ async function postData(url = '', data = {}) {
 }
 
 const user = JSON.parse(localStorage.getItem('user'))
-if (!user || !user.email) {
+const token = JSON.parse(localStorage.getItem('Access Token'))
+console.log(token)
+if (!user || !user.email || !token) {
   window.location = '/login'
 }
 console.log(user._id)
@@ -60,6 +62,7 @@ fetchNotes();
 logout.addEventListener('click', () => {
   localStorage.removeItem("user")
   localStorage.removeItem('Note Data')
+  localStorage.removeItem('Access Token')
   window.location = '/login';
 });
 
