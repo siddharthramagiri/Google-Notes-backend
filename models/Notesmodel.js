@@ -7,8 +7,15 @@ const NoteSchema = mongoose.Schema({
         ref : 'userschemas',
     },
     // email: {type: String, require: true},
-    title: { type: String, require: [true, "title is Required"],},
-    description: { type: String, require: [true, "Description is Required"],},
-}, { timestamps: true })
+    title: { 
+        type: String,
+        require: [true, "title is Required"],
+    },
+    description: { 
+        type: String, 
+        require: [true, "Description is Required"],
+    },
+}, { timestamps: true }
+)
 
 module.exports = mongoose.model('noteschema', NoteSchema)

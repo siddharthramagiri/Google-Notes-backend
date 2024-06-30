@@ -18,8 +18,7 @@ const LoginUser = ExpressAsyncHandler(async (req,res) => {
                     email : email,
                     password : password,
                     id : user._id,
-                },process.env.ACCESS_TOKEN,
-                {expiresIn : "20m"}
+                },process.env.ACCESS_TOKEN,{expiresIn : "20m"}
             );
         console.log("Logged in Successfully")
         res.status(200).json({success:true,message:"Logged in Successfully",user : user, AccessToken :AccessToken})

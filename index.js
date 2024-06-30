@@ -6,6 +6,7 @@ const userschemas = require('./models/Usersmodel')
 const noteschema = require('./models/Notesmodel')
 const errorhandle = require('./middlewares/ErrorHandler')
 const ExpressAsyncHandler = require('express-async-handler')
+const { title } = require('process')
 
 const app = express()
 app.use(express.json({ extended: true }))
@@ -35,14 +36,32 @@ app.get('/shownote/:id', (req, res) => {
     .sendFile(path.join(__dirname, 'public', 'opennote.html'))
 });
 
-app.get('/shownote/:id', ExpressAsyncHandler(async (req, res) => {
-    const id = await req.params.id
+app.post('/shownote/:id', ExpressAsyncHandler(async (req, res) => {
+    const id = req.params.id
     console.log(id)
     const opennote = await noteschema.findOne({_id : id})
     console.log(opennote)
-    res.status(200)
-    .json({success:true, message :"Note Opened", note :opennote})
+    res.status(201).json({success:true, message :"Note Opened", note :opennote})
 }));
+
+app.put('/shownote/:id', ExpressAsyncHandler(async (req,res) => {
+    
+    const note = await noteschema.findById(req.params.id)
+    if(!note) {
+        res.status(403)
+        throw new Error('Note not Found')
+    }
+    const updatedNote = await noteschema.findByIdAndUpdate(
+        req.params.id,
+        {
+            title : req.body.title,
+            description : req.body.desc,
+        },
+        {new : true},
+    );
+    console.log('Updated Note\n', updatedNote)
+    res.status(200).json({success : true, message : "Note UPdated Successfully", note : updatedNote});
+}))
 
 app.use('/', require('./routes/userRoutes'))
 

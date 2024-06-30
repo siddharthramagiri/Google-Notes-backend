@@ -62,7 +62,7 @@
     <script >
 
         const note = JSON.parse(localStorage.getItem('Notes Data'))
-        console.log(note)
+
         if (note) {
             document.querySelector('.container').innerHTML = `
                 <div class="modal-dialog">
@@ -80,8 +80,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button id="submit" type="button" class="btn btn-primary" type="submit">Save changes</button>
+                        <button id="submit" type="button" class="btn btn-primary" type="submit" onclick="updnote('${note._id}')">Save </button>
                     </div>
                 </div>
             </div>
@@ -93,6 +92,41 @@
             localStorage.removeItem('Note Data')
             window.location = '/login';
         });
+
+        async function updtData(url='',data = {}) {
+            try {
+                const response = await fetch(url , {
+                    method : 'PUT',
+                    headers : {
+                        'Content-Type' : 'application/JSON',
+                    },
+                    body : JSON.stringify(data),
+                    params : JSON.stringify(data),
+                });
+                if (!response) {
+                    throw new Error(`Error HTTP status ${response.status}`)
+                }
+                let upd_data = await response.json();
+                return upd_data
+
+            } catch (error) {
+                console.error(error.message);
+                throw error;
+            }
+            
+        }
+
+        async function updnote(id) {
+            const title = document.getElementById('title').value
+            const desc = document.getElementById('desc').value
+            const resp = await updtData(`/shownote/${id}`, {id, title, desc})
+            console.log(resp)
+            if(resp.success) {
+                alert(resp.message)
+                localStorage.setItem('Notes Data',JSON.stringify(resp.note))
+
+            }
+        }
 
     </script>
 </body>

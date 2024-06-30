@@ -26,7 +26,7 @@ async function postData(url = '', data = {}) {
 const user = JSON.parse(localStorage.getItem('user'))
 const token = JSON.parse(localStorage.getItem('Access Token'))
 console.log(token)
-if (!user || !user.email || !token) {
+if (!user || !user.email ) {
   window.location = '/login'
 }
 console.log(user._id)
@@ -44,7 +44,7 @@ const fetchNotes = async () => {
         let str = `
                     <div class="card mb-3 mx-3" style="width: 18rem;">
                             <div class="card-body">
-                              <div onclick="shownote('${element.title}','${element.description}','${element._id}')">
+                              <div onclick="shownote('${element._id}')">
                                 <h5 class="card-title">${element.title}</h5>
                                 <p class="card-text">${element.description}</p>
                               </div>
@@ -90,7 +90,7 @@ async function getData(url = '', data = {}) {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/HTML',
+        'Content-Type': 'text/html',
       },
       params: JSON.stringify(data),
     });
@@ -107,14 +107,16 @@ async function getData(url = '', data = {}) {
   }
 }
 
-async function shownote(title, description, id) {
-  window.location = `/shownote/${id}`;
-  const resp = await getData(`/shownote/${id}`, { id })
+async function shownote(id) {
+  
+  const resp = await postData(`/shownote/${id}`, { id })
+  console.log(resp)
   if (resp.success) {
     // window.location = resp.fileUrl
     localStorage.setItem('Notes Data', JSON.stringify(resp.note))
     console.log(resp)
   }
+  window.location = `/shownote/${id}`;
 }
 
 

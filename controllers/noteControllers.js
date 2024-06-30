@@ -25,10 +25,10 @@ const AddNotes = ExpressAsyncHandler(async (req,res) => {
 });
 
 
-const ShowNote = ExpressAsyncHandler(async (req,res) => {
-    const {id} = req.body
-    const opennote = await noteschema.findOne({_id : id})
-    res.status(200).json({success:true,note : opennote})
-});
+// const ShowNote = ExpressAsyncHandler(async (req,res) => {
+//     const {id} = req.body
+//     const opennote = await noteschema.findOne({_id : id})
+//     res.status(200).json({success:true,note : opennote})
+// });
 
-module.exports = {getNotes,AddNotes,ShowNote}
+module.exports = {getNotes,AddNotes}
