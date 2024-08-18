@@ -7,8 +7,15 @@ const noteschema = require('./models/Notesmodel')
 const errorhandle = require('./middlewares/ErrorHandler')
 const ExpressAsyncHandler = require('express-async-handler')
 const { title } = require('process')
+const cors = require('cors')
 
 const app = express()
+const corsConfig = {
+    origin: "*",
+    credential: true,
+    methods : ["GET","POST","PUT","DELETE"]
+};
+app.use(cors(corsConfig));
 app.use(express.json({ extended: true }))
 app.use(express.urlencoded({ extended: true }))
 const PORT = process.env.PORT || 8080
